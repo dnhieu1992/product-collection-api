@@ -91,7 +91,7 @@ const specs = swaggerJsDoc(options);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-app.listen(appConfig.PORT, (request, respond) => {
+app.listen(process.env.PORT || appConfig.PORT, (request, respond) => {
     console.log(`Our server is live on ${appConfig.PORT}. Yay!`);
 });
 
