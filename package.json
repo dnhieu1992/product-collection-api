@@ -2,10 +2,9 @@
   "name": "product-collection-api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js",
     "start": "nodemon --experimental-json-modules src/app.js"
   },
   "dependencies": {
