@@ -13,7 +13,7 @@ const router = express.Router();
  * @swagger
  * components:
  *   schemas:
- *     Country:
+ *     Product:
  *       type: object
  *       required:
  *         - shopName
@@ -75,7 +75,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Countries
+ *   name: Products
  *   description: The Countries managing API
  */
 
@@ -131,7 +131,7 @@ router.put('/update', updateProduct);
 
 /**
  * @swagger
- * /api/country/search:
+ * /api/product/search:
  *   get:
  *     summary: Returns the list of all the country
  *     tags: [Products]

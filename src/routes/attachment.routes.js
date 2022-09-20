@@ -1,9 +1,10 @@
 import express from 'express';
 import {
-    uploadImage,
-    getImage,
+    upload,
     removeFile,
+    uploadMultiple
 } from '../controllers/master-datas/attachment.controller.js';
+import uploadFile from '../shared/middleware/Upload.js';
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/attachment/uploadImage:
+ * /api/attachment/upload:
  *   post:
  *     summary: Upload file
  *     consumes:
@@ -44,28 +45,43 @@ const router = express.Router();
  *       500:
  *         description: Some server error
  */
-router.post("/uploadImage", uploadImage);
+router.post("/upload", uploadFile.single("file"), upload);
 
 /**
  * @swagger
- * /api/attachment/{fileName}:
- *   get:
- *     summary: Get the file by name
+ * /api/attachment/uploadMultiple:
+ *   post:
+ *     summary: Upload files
+ *     consumes:
+ *      - multipart/form-data
  *     tags: [Attachments]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               [file]: {
+ *                  type: array,
+ *                  items: {
+ *                      type: 'string',
+ *                      format: binary
+ *                  }
+ *               }
  *     parameters:
- *       - in: path
- *         name: fileName
- *         schema:
- *           type: string
- *         required: true
- *         description: The file name
+ *      - in: formData
+ *        name: file
+ *        schema:
+ *          type: file
+ *        description: the file to upload
  *     responses:
  *       200:
- *         description: The file description by name
- *       404:
- *         description: The file was not found
+ *         description: The file was successfully uploaded
+ *       500:
+ *         description: Some server error
  */
-router.get("/:fileName", getImage);
+router.post("/uploadMultiple", uploadFile.array("files"), uploadMultiple);
 
 /**
  * @swagger
@@ -87,6 +103,6 @@ router.get("/:fileName", getImage);
  *       404:
  *         description: The file was not found
  */
- router.delete('/delete/:fileName', removeFile);
+router.delete('/delete/:fileName', removeFile);
 
 export default router;

@@ -1,4 +1,7 @@
 const APP_CONFIG = {
-    PORT: 5000
+    PORT: 5000,
+    CLOUDINARY_NAME: "du6jdcudz",
+    CLOUDINARY_KEY: "679691371748568",
+    CLOUDINARY_SECRET: "3y4kTVRWNs9eN0Wkf3Hv_Jiw_yM"
 }
 export default APP_CONFIG;

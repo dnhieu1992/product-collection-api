@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import logger from 'morgan';
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import { createUser } from './services/user.service.js';
 
 //import DB_CONFIG from './config/db.config.js';
 import appConfig from './config/app.config.js';
@@ -19,6 +20,7 @@ import productRoutes from './routes/product.routes.js';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
+import db from './models/index.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -34,13 +36,13 @@ app.use(cors())
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
 
 // set up mongoose
 const username = encodeURIComponent("thanhho109");
 const password = encodeURIComponent("Qaz@123456");
-const mongoUrl = `mongodb+srv://${username}:${password}@cluster0.uqxw2uv.mongodb.net/products?retryWrites=true&w=majority` 
+const mongoUrl = `mongodb+srv://${username}:${password}@cluster0.uqxw2uv.mongodb.net/products?retryWrites=true&w=majority`
 
 mongoose.Promise = global.Promise;
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -97,8 +99,10 @@ app.listen(process.env.PORT || appConfig.PORT, (request, respond) => {
 
 // set up route
 app.use('/api/', authRoutes);
-app.use('/api/user/', verifyToken, userRoutes);
-app.use('/api/attachment/', verifyToken, attachmentRoutes);
-app.use('/api/products/', verifyToken, productRoutes);
+app.use('/api/user/', userRoutes);
+app.use('/api/attachment/', attachmentRoutes);
+app.use('/api/product/', verifyToken, productRoutes);
+
+
 
 

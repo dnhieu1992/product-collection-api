@@ -14,6 +14,7 @@ async function login(req, res) {
         } = req.body;
 
         const user = await db.User.findOne({ username: username });
+        console.log("user", username, password, user)
 
         if (!user) {
             return badRequestResponse(res, ERROR_MSG.USERNAME_OR_PASSWORD_INVALID);
@@ -29,7 +30,8 @@ async function login(req, res) {
             username: user.username,
             email: user.email,
             firstName: user.firstName,
-            lastName: user.lastName
+            lastName: user.lastName,
+            roles: user.roles
         }
 
         const token = jwt.sign(currentUser, AUTH_CONFIG.SECRET_KEY, { expiresIn: 30 * 60 });
@@ -63,7 +65,9 @@ async function register(req, res) {
             password
         } = req.body;
 
+
         const userByUsername = await db.User.findOne({ username: username });
+        
         if (userByUsername) {
             return duplicatedResponse(res, ERROR_MSG.USERNAME_EXISTS);
         }
@@ -83,6 +87,7 @@ async function register(req, res) {
             email: email,
             password: hashPassword,
             //tokens: [{ token }]
+            roles: ["user"]
         });
 
         await newUser.save();

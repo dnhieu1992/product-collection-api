@@ -10,7 +10,9 @@ const userSchema = new mongoose.Schema({
     address: String,
     phoneNumber: String,
     tokens: [],
-    roles: [{ name: { type: String, require: true }, claims: [] }],
+    roles: [{
+        type: String
+    }],
     isDeleted: { type: Boolean, default: false },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
