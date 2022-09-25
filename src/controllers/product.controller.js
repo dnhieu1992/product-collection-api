@@ -8,8 +8,11 @@ import {
     notFoundResponse
 } from '../shared/response.js';
 import { SORT_DIRECTION } from '../constants/constants.js';
+import jwt from 'jsonwebtoken';
+import AUTH_CONFIG from '../config/auth.config.js'
 
 function createProduct(req, res) {
+    console.log("req", req.body)
     const newProduct = new db.Product({
         _id: mongoose.Types.ObjectId(),
         ...req.body
@@ -47,10 +50,17 @@ function search(req, res) {
     const sortObject = {};
     sortObject[sortField] = sortDirection === SORT_DIRECTION.ASC ? 1 : -1;
 
+    const tokenInfo = jwt.decode(req.header('authorization').split(' ')[1], AUTH_CONFIG.SECRET_KEY)
+    if (!tokenInfo?.roles?.includes("manager") && !tokenInfo?.roles?.includes("staff")) {
+        query["createdBy"] = mongoose.Types.ObjectId(tokenInfo.id);
+    }
+
     db.Product.find(query)
         .sort(sortObject)
         .skip((parseInt(pageNumber) - 1) * parseInt(pageSize))
         .limit(parseInt(pageSize))
+        .populate('createdBy')
+        .populate('updatedBy')
         .exec((err, products) => {
             if (err) {
                 return errorResponse(res, err);

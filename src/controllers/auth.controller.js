@@ -14,7 +14,6 @@ async function login(req, res) {
         } = req.body;
 
         const user = await db.User.findOne({ username: username });
-        console.log("user", username, password, user)
 
         if (!user) {
             return badRequestResponse(res, ERROR_MSG.USERNAME_OR_PASSWORD_INVALID);
