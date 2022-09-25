@@ -28,11 +28,8 @@ const __dirname = path.dirname(__filename);
 global.__basedir = __dirname;
 console.log(__basedir);
 
-var uploadFolderDirection = __dirname + "/assets/uploads"
-
-if (!fs.existsSync(uploadFolderDirection)) {
-    fs.mkdirSync(uploadFolderDirection);
-}
+const uploadFolderDirection = __dirname + '/assets/uploads/'
+console.log("uploadFolderDirection", uploadFolderDirection)
 // set up express app
 const app = express();
 app.use(express.static(__dirname + '/assets/uploads/'));
@@ -45,6 +42,12 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
+
+if (!fs.existsSync(uploadFolderDirection)) {
+    fs.mkdirSync(uploadFolderDirection, {
+        recursive: true
+    });
+}
 
 // set up mongoose
 const username = encodeURIComponent("thanhho109");
