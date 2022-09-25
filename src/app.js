@@ -21,11 +21,18 @@ import productRoutes from './routes/product.routes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import db from './models/index.js';
+import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 global.__basedir = __dirname;
 console.log(__basedir);
+
+var uploadFolderDirection = __dirname + "/assets/uploads"
+
+if (!fs.existsSync(uploadFolderDirection)) {
+    fs.mkdirSync(uploadFolderDirection);
+}
 // set up express app
 const app = express();
 app.use(express.static(__dirname + '/assets/uploads/'));
